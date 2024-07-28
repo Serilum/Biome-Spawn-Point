@@ -3,6 +3,7 @@ package com.natamus.biomespawnpoint;
 import com.natamus.biomespawnpoint.events.BiomeSpawnEvent;
 import com.natamus.biomespawnpoint.util.Reference;
 import com.natamus.collective.check.RegisterMod;
+import com.natamus.collective.check.ShouldLoadCheck;
 import com.natamus.collective.fabric.callbacks.CollectiveMinecraftServerEvents;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.server.level.ServerLevel;
@@ -12,6 +13,10 @@ public class ModFabric implements ModInitializer {
 	
 	@Override
 	public void onInitialize() {
+		if (!ShouldLoadCheck.shouldLoad(Reference.MOD_ID)) {
+			return;
+		}
+
 		setGlobalConstants();
 		ModCommon.init();
 

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "biomespawnpoint",
-  "version": "2.2",
+  "version": "2.3",
 
   "name": "Biome Spawn Point",
   "description": "Allows specifying which biome players will spawn in on new world creation.",
@@ -23,7 +23,7 @@
     "fabric": "*",
     "minecraft": ">=1.21",
     "java": ">=21",
-    "collective": ">=7.61"
+    "collective": ">=7.78"
   },
 
   "custom": {
@@ -44,11 +44,9 @@
 	  " Alister",
 	  " Andrean Olgo",
 	  " aternosorg",
-	  " BirdieMiner",
 	  " Cherriesaurus",
-	  " Jeremy Langford",
 	  " Michael W. S.",
-	  " Rare Students",
+	  " Nahuel Fernandez",
 	  " Shana Gitnick",
 	  " Tyler Behl"
   ]
