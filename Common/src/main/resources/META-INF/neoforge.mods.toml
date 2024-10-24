@@ -1,0 +1,37 @@
+modLoader="javafml"
+loaderVersion="*"
+license="All rights reserved"
+issueTrackerURL="https://github.com/Serilum/.issue-tracker/labels/Mod:%20Biome%20Spawn%20Point"
+logoFile="icon.png"
+
+[[mods]]
+modId="biomespawnpoint"
+version="2.3"
+displayName="Biome Spawn Point"
+displayURL="https://serilum.com/mod/biome-spawn-point"
+authors="Rick South"
+description='''Allows specifying which biome players will spawn in on new world creation.
+'''
+credits='''Thank you very much to my Membership sponsors for supporting the development of this mod:  
+
+Alister, Andrean Olgo, aternosorg, Cherriesaurus, kate1073, Michael W. S., Tyler Behl, XAgent   
+
+If you would like to contribute too, check out https://serilum.com/donate. Appreciate it! <3   
+'''
+
+[[dependencies.biomespawnpoint]]
+    modId="collective"
+    type="required"
+    versionRange="[7.88,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.biomespawnpoint]]
+    modId="minecraft"
+    type="required"
+    versionRange="[1.21.2,1.21.3]"
+    ordering="NONE"
+    side="BOTH"
+
+[[mixins]]
+    config = "biomespawnpoint.mixins.json"
