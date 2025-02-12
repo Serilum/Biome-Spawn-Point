@@ -28,7 +28,7 @@ public class ModForge {
 	}
 
 	private void loadComplete(final FMLLoadCompleteEvent event) {
-    	MinecraftForge.EVENT_BUS.register(new ForgeBiomeSpawnEvent());
+    	MinecraftForge.EVENT_BUS.register(ForgeBiomeSpawnEvent.class);
 	}
 
 	private static void setGlobalConstants() {
