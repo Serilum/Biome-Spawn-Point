@@ -6,7 +6,7 @@ logoFile="icon.png"
 
 [[mods]]
 modId="biomespawnpoint"
-version="2.4"
+version="2.5"
 displayName="Biome Spawn Point"
 displayURL="https://serilum.com/mod/biome-spawn-point"
 authors="Rick South"

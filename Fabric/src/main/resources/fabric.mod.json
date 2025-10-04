@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "biomespawnpoint",
-  "version": "2.4",
+  "version": "2.5",
 
   "name": "Biome Spawn Point",
   "description": "Allows specifying which biome players will spawn in on new world creation.",
