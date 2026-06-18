@@ -4,7 +4,6 @@ import com.natamus.biomespawnpoint.forge.events.ForgeBiomeSpawnEvent;
 import com.natamus.biomespawnpoint.util.Reference;
 import com.natamus.collective.check.RegisterMod;
 import com.natamus.collective.check.ShouldLoadCheck;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.bus.BusGroup;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
