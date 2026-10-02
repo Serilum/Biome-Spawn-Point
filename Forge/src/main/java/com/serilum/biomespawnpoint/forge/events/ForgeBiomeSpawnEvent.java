@@ -1,16 +1,16 @@
-package com.natamus.biomespawnpoint.neoforge.events;
+package com.serilum.biomespawnpoint.forge.events;
 
 import com.mojang.logging.LogUtils;
-import com.natamus.biomespawnpoint.events.BiomeSpawnEvent;
+import com.serilum.biomespawnpoint.events.BiomeSpawnEvent;
 import com.natamus.collective.functions.WorldFunctions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ServerLevelData;
-import net.neoforged.neoforge.event.level.LevelEvent;
-import net.neoforged.bus.api.SubscribeEvent;
+import net.minecraftforge.event.level.LevelEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.slf4j.Logger;
 
-public class NeoForgeBiomeSpawnEvent {
+public class ForgeBiomeSpawnEvent {
 	private static final Logger logger = LogUtils.getLogger();
 
 	@SubscribeEvent(receiveCanceled = true)

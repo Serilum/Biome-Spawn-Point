@@ -1,7 +1,7 @@
-package com.natamus.biomespawnpoint;
+package com.serilum.biomespawnpoint;
 
-import com.natamus.biomespawnpoint.neoforge.events.NeoForgeBiomeSpawnEvent;
-import com.natamus.biomespawnpoint.util.Reference;
+import com.serilum.biomespawnpoint.neoforge.events.NeoForgeBiomeSpawnEvent;
+import com.serilum.biomespawnpoint.util.Reference;
 import com.natamus.collective.check.RegisterMod;
 import com.natamus.collective.check.ShouldLoadCheck;
 import net.neoforged.neoforge.common.NeoForge;

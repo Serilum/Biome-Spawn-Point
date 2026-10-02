@@ -1,7 +1,7 @@
-package com.natamus.biomespawnpoint;
+package com.serilum.biomespawnpoint;
 
-import com.natamus.biomespawnpoint.events.BiomeSpawnEvent;
-import com.natamus.biomespawnpoint.util.Reference;
+import com.serilum.biomespawnpoint.events.BiomeSpawnEvent;
+import com.serilum.biomespawnpoint.util.Reference;
 import com.natamus.collective.check.RegisterMod;
 import com.natamus.collective.check.ShouldLoadCheck;
 import com.natamus.collective.fabric.callbacks.CollectiveMinecraftServerEvents;
