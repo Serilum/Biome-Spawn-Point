@@ -1,7 +1,7 @@
-package com.natamus.biomespawnpoint.neoforge.events;
+package com.serilum.biomespawnpoint.neoforge.events;
 
 import com.mojang.logging.LogUtils;
-import com.natamus.biomespawnpoint.events.BiomeSpawnEvent;
+import com.serilum.biomespawnpoint.events.BiomeSpawnEvent;
 import com.natamus.collective.functions.WorldFunctions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
