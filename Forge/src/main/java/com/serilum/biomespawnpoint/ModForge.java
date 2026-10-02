@@ -1,7 +1,7 @@
-package com.natamus.biomespawnpoint;
+package com.serilum.biomespawnpoint;
 
-import com.natamus.biomespawnpoint.forge.events.ForgeBiomeSpawnEvent;
-import com.natamus.biomespawnpoint.util.Reference;
+import com.serilum.biomespawnpoint.forge.events.ForgeBiomeSpawnEvent;
+import com.serilum.biomespawnpoint.util.Reference;
 import com.natamus.collective.check.RegisterMod;
 import com.natamus.collective.check.ShouldLoadCheck;
 import net.minecraftforge.common.MinecraftForge;
@@ -28,7 +28,7 @@ public class ModForge {
 	}
 
 	private void loadComplete(final FMLLoadCompleteEvent event) {
-    	MinecraftForge.EVENT_BUS.register(ForgeBiomeSpawnEvent.class);
+		MinecraftForge.EVENT_BUS.register(ForgeBiomeSpawnEvent.class);
 	}
 
 	private static void setGlobalConstants() {

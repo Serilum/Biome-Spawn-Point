@@ -1,7 +1,7 @@
-package com.natamus.biomespawnpoint.events;
+package com.serilum.biomespawnpoint.events;
 
-import com.natamus.biomespawnpoint.data.Constants;
-import com.natamus.biomespawnpoint.util.Util;
+import com.serilum.biomespawnpoint.data.Constants;
+import com.serilum.biomespawnpoint.util.Util;
 import com.natamus.collective.functions.BlockPosFunctions;
 import com.natamus.collective.functions.FeatureFunctions;
 import com.natamus.collective.services.Services;
