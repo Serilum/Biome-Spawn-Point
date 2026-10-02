@@ -1,8 +1,8 @@
-package com.natamus.biomespawnpoint;
+package com.serilum.biomespawnpoint;
 
 
-import com.natamus.biomespawnpoint.data.Constants;
-import com.natamus.biomespawnpoint.util.Util;
+import com.serilum.biomespawnpoint.data.Constants;
+import com.serilum.biomespawnpoint.util.Util;
 
 public class ModCommon {
 

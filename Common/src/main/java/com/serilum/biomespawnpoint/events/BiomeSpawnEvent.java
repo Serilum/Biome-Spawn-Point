@@ -1,7 +1,7 @@
-package com.natamus.biomespawnpoint.events;
+package com.serilum.biomespawnpoint.events;
 
-import com.natamus.biomespawnpoint.data.Constants;
-import com.natamus.biomespawnpoint.util.Util;
+import com.serilum.biomespawnpoint.data.Constants;
+import com.serilum.biomespawnpoint.util.Util;
 import com.natamus.collective.functions.BlockPosFunctions;
 import com.natamus.collective.functions.FeatureFunctions;
 import com.natamus.collective.services.Services;
@@ -31,7 +31,7 @@ public class BiomeSpawnEvent {
 					Constants.logger.info("[Biome Spawn Point] Received spawn point biome name is empty.");
 				}
 				else {
-                    Constants.logger.info("[Biome Spawn Point] Finding the nearest '{}' biome. This might take a few seconds.", spawnBiome);
+					Constants.logger.info("[Biome Spawn Point] Finding the nearest '{}' biome. This might take a few seconds.", spawnBiome);
 					spawnPos = BlockPosFunctions.getCenterNearbyBiome(serverLevel, spawnBiome);
 					if (spawnPos != null) {
 						Constants.logger.info("[Biome Spawn Point] Biome found!");

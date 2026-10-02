@@ -1,4 +1,4 @@
-package com.natamus.biomespawnpoint.util;
+package com.serilum.biomespawnpoint.util;
 
 import com.natamus.collective.data.GlobalVariables;
 import com.natamus.collective.functions.DataFunctions;

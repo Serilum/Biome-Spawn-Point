@@ -1,4 +1,4 @@
-package com.natamus.biomespawnpoint.data;
+package com.serilum.biomespawnpoint.data;
 
 import com.mojang.logging.LogUtils;
 import org.slf4j.Logger;
