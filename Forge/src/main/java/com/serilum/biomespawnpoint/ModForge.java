@@ -1,5 +1,6 @@
 package com.serilum.biomespawnpoint;
 
+import com.serilum.biomespawnpoint.forge.config.IntegrateForgeConfig;
 import com.serilum.biomespawnpoint.forge.events.ForgeBiomeSpawnEvent;
 import com.serilum.biomespawnpoint.util.Reference;
 import com.natamus.collective.check.RegisterMod;
@@ -22,6 +23,8 @@ public class ModForge {
 
 		setGlobalConstants();
 		ModCommon.init();
+
+		IntegrateForgeConfig.registerScreen(modLoadingContext);
 
 		RegisterMod.register(Reference.NAME, Reference.MOD_ID, Reference.VERSION, Reference.ACCEPTED_VERSIONS);
 	}
