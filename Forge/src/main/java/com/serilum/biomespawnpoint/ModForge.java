@@ -1,11 +1,13 @@
 package com.serilum.biomespawnpoint;
 
+import com.serilum.biomespawnpoint.forge.config.IntegrateForgeConfig;
 import com.serilum.biomespawnpoint.forge.events.ForgeBiomeSpawnEvent;
 import com.serilum.biomespawnpoint.util.Reference;
 import com.natamus.collective.check.RegisterMod;
 import com.natamus.collective.check.ShouldLoadCheck;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -23,6 +25,8 @@ public class ModForge {
 
 		setGlobalConstants();
 		ModCommon.init();
+
+		IntegrateForgeConfig.registerScreen(ModLoadingContext.get());
 
 		RegisterMod.register(Reference.NAME, Reference.MOD_ID, Reference.VERSION, Reference.ACCEPTED_VERSIONS);
 	}

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "biomespawnpoint",
-  "version": "2.6",
+  "version": "3.0",
 
   "name": "Biome Spawn Point",
   "description": "Allows specifying which biome players will spawn in on new world creation.",
@@ -16,14 +16,14 @@
   "icon": "icon.png",
 
   "environment": "*",
-  "entrypoints": { "main": [ "com.serilum.biomespawnpoint.ModFabric" ] },
+  "entrypoints": { "main": [ "com.serilum.biomespawnpoint.ModFabric" ], "modmenu": [ "com.serilum.biomespawnpoint.fabric.config.IntegrateModMenu" ] },
 
   "depends": {
     "fabricloader": ">=0.15.0",
     "fabric": "*",
     "minecraft": ">=1.21",
     "java": ">=21",
-    "collective": ">=8.40"
+    "collective": ">=8.52"
   },
 
   "custom": {
@@ -41,7 +41,6 @@
 	  "If you would like to contribute too, check out https://serilum.com/donate",
 	  " ",
 	  "Membership sponsors:",
-	  " Andrean Olgo",
 	  " AnyankaT",
 	  " aternosorg",
 	  " Cherriesaurus",
