@@ -1,17 +1,24 @@
-package com.natamus.biomespawnpoint.neoforge.events;
+package com.serilum.biomespawnpoint.neoforge.events;
 
 import com.mojang.logging.LogUtils;
-import com.natamus.biomespawnpoint.events.BiomeSpawnEvent;
+import com.serilum.biomespawnpoint.cmds.CommandBiomeSpawnPoint;
+import com.serilum.biomespawnpoint.events.BiomeSpawnEvent;
 import com.natamus.collective.functions.WorldFunctions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ServerLevelData;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import org.slf4j.Logger;
 
 public class NeoForgeBiomeSpawnEvent {
 	private static final Logger logger = LogUtils.getLogger();
+
+	@SubscribeEvent
+	public static void registerCommands(RegisterCommandsEvent e) {
+		CommandBiomeSpawnPoint.register(e.getDispatcher());
+	}
 
 	@SubscribeEvent(receiveCanceled = true)
 	public static void onWorldLoad(LevelEvent.CreateSpawnPosition e) {

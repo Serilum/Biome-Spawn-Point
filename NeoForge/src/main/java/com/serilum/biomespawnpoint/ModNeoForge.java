@@ -1,11 +1,13 @@
-package com.natamus.biomespawnpoint;
+package com.serilum.biomespawnpoint;
 
-import com.natamus.biomespawnpoint.neoforge.events.NeoForgeBiomeSpawnEvent;
-import com.natamus.biomespawnpoint.util.Reference;
+import com.serilum.biomespawnpoint.neoforge.config.IntegrateNeoForgeConfig;
+import com.serilum.biomespawnpoint.neoforge.events.NeoForgeBiomeSpawnEvent;
+import com.serilum.biomespawnpoint.util.Reference;
 import com.natamus.collective.check.RegisterMod;
 import com.natamus.collective.check.ShouldLoadCheck;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 
@@ -21,6 +23,8 @@ public class ModNeoForge {
 
 		setGlobalConstants();
 		ModCommon.init();
+
+		IntegrateNeoForgeConfig.registerScreen(ModLoadingContext.get());
 
 		RegisterMod.register(Reference.NAME, Reference.MOD_ID, Reference.VERSION, Reference.ACCEPTED_VERSIONS);
 	}

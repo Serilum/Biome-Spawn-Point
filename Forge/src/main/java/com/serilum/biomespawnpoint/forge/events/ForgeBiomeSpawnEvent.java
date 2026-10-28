@@ -1,11 +1,13 @@
-package com.natamus.biomespawnpoint.forge.events;
+package com.serilum.biomespawnpoint.forge.events;
 
 import com.mojang.logging.LogUtils;
-import com.natamus.biomespawnpoint.events.BiomeSpawnEvent;
+import com.serilum.biomespawnpoint.cmds.CommandBiomeSpawnPoint;
+import com.serilum.biomespawnpoint.events.BiomeSpawnEvent;
 import com.natamus.collective.functions.WorldFunctions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ServerLevelData;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.listener.SubscribeEvent;
 import org.slf4j.Logger;
@@ -15,6 +17,11 @@ public class ForgeBiomeSpawnEvent {
 		// BusGroup.DEFAULT.register(MethodHandles.lookup(), ForgeBiomeSpawnEvent.class);
 
 		LevelEvent.CreateSpawnPosition.BUS.addListener(ForgeBiomeSpawnEvent::onWorldLoad);
+		RegisterCommandsEvent.BUS.addListener(ForgeBiomeSpawnEvent::registerCommands);
+	}
+
+	public static void registerCommands(RegisterCommandsEvent e) {
+		CommandBiomeSpawnPoint.register(e.getDispatcher());
 	}
 
 	private static final Logger logger = LogUtils.getLogger();
