@@ -10,9 +10,8 @@ import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import com.natamus.collective.data.GlobalVariables;
 import com.natamus.collective.functions.MessageFunctions;
 import com.serilum.biomespawnpoint.config.ConfigHandler;
-import com.serilum.biomespawnpoint.data.Constants;
-import com.serilum.biomespawnpoint.events.BiomeSpawnEvent;
 import com.serilum.biomespawnpoint.util.Reference;
+import com.serilum.biomespawnpoint.util.SpawnBiomeFiles;
 import com.serilum.biomespawnpoint.util.Util;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
@@ -25,6 +24,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
@@ -54,24 +54,6 @@ public class CommandBiomeSpawnPoint {
 				showUsage(command.getSource(), commandName);
 				return 1;
 			}))
-			.then(Commands.literal("reload")
-			.executes((command) -> {
-				CommandSourceStack source = command.getSource();
-
-				Registry<Biome> biomeRegistry = source.getServer().registryAccess().registryOrThrow(Registries.BIOME);
-				try {
-					Util.loadSpawnBiomeConfig(biomeRegistry);
-				}
-				catch (Exception ex) {
-					MessageFunctions.sendTranslatableMessage(source, "collective.biomespawnpoint.message.somethingwentwrong", true, ChatFormatting.RED);
-					Constants.logger.warn("[Biome Spawn Point] Unable to reload spawnbiomes.txt: " + ex.getMessage());
-					return 0;
-				}
-
-				MessageFunctions.sendTranslatableMessage(source, "collective.biomespawnpoint.message.reloaded", true, ChatFormatting.DARK_GREEN);
-				showSpawnBiomes(source);
-				return 1;
-			}))
 			.then(Commands.literal("enable")
 			.then(Commands.argument("biome", ResourceOrTagKeyArgument.resourceOrTagKey(Registries.BIOME))
 			.suggests(CommandBiomeSpawnPoint::suggestBiomesToEnable)
@@ -97,36 +79,29 @@ public class CommandBiomeSpawnPoint {
 
 	private static int setBiomeEnabled(CommandContext<CommandSourceStack> command, boolean enable) throws CommandSyntaxException {
 		CommandSourceStack source = command.getSource();
+		MinecraftServer server = source.getServer();
 		ResourceOrTagKeyArgument.Result<Biome> biome = ResourceOrTagKeyArgument.getResourceOrTagKey(command, "biome", Registries.BIOME, invalidBiomeException);
 		String biomeName = biome.asPrintable();
 
-		Registry<Biome> biomeRegistry = source.getServer().registryAccess().registryOrThrow(Registries.BIOME);
+		Registry<Biome> biomeRegistry = server.registryAccess().registryOrThrow(Registries.BIOME);
 		if (!existsInWorld(biomeRegistry, biome)) {
 			MessageFunctions.sendTranslatableMessage(source, "collective.biomespawnpoint.message.unknownbiome", true, ChatFormatting.RED, biomeName);
 			return 0;
 		}
 
-		try {
-			Util.loadSpawnBiomeConfig(biomeRegistry);
-
-			boolean isEnabled = Util.getSpawnBiomes().contains(biomeName);
-			if (isEnabled && enable) {
-				MessageFunctions.sendTranslatableMessage(source, "collective.biomespawnpoint.message.alreadyenabled", true, ChatFormatting.YELLOW, biomeName);
-				return 0;
-			}
-			if (!isEnabled && !enable) {
-				MessageFunctions.sendTranslatableMessage(source, "collective.biomespawnpoint.message.alreadydisabled", true, ChatFormatting.YELLOW, biomeName);
-				return 0;
-			}
-
-			Util.setSpawnBiomeEnabled(biomeName, enable);
-			Util.loadSpawnBiomeConfig(biomeRegistry);
-		}
-		catch (Exception ex) {
-			MessageFunctions.sendTranslatableMessage(source, "collective.biomespawnpoint.message.somethingwentwrongediting", true, ChatFormatting.RED);
-			Constants.logger.warn("[Biome Spawn Point] Unable to edit spawnbiomes.txt: " + ex.getMessage());
+		String spawnBiomes = SpawnBiomeFiles.getSpawnBiomesForWorld(server);
+		boolean isEnabled = Util.getEnabledSpawnBiomes(spawnBiomes).contains(biomeName);
+		if (isEnabled && enable) {
+			MessageFunctions.sendTranslatableMessage(source, "collective.biomespawnpoint.message.alreadyenabled", true, ChatFormatting.YELLOW, biomeName);
 			return 0;
 		}
+		if (!isEnabled && !enable) {
+			MessageFunctions.sendTranslatableMessage(source, "collective.biomespawnpoint.message.alreadydisabled", true, ChatFormatting.YELLOW, biomeName);
+			return 0;
+		}
+
+		String newSpawnBiomes = Util.setSpawnBiomeEnabled(spawnBiomes, biomeName, enable);
+		SpawnBiomeFiles.saveSpawnBiomesForWorld(server, newSpawnBiomes);
 
 		if (enable) {
 			MessageFunctions.sendTranslatableMessage(source, "collective.biomespawnpoint.message.enabledbiome", true, ChatFormatting.DARK_GREEN, biomeName);
@@ -135,13 +110,18 @@ public class CommandBiomeSpawnPoint {
 			MessageFunctions.sendTranslatableMessage(source, "collective.biomespawnpoint.message.disabledbiome", true, ChatFormatting.DARK_GREEN, biomeName);
 		}
 
-		showSpawnBiomes(source);
+		showSpawnBiomes(source, newSpawnBiomes);
 		return 1;
+	}
+
+	private static List<String> getEnabledSpawnBiomesForWorld(CommandContext<CommandSourceStack> command) {
+		String spawnBiomes = SpawnBiomeFiles.getSpawnBiomesForWorld(command.getSource().getServer());
+		return Util.getEnabledSpawnBiomes(spawnBiomes);
 	}
 
 	private static CompletableFuture<Suggestions> suggestBiomesToEnable(CommandContext<CommandSourceStack> command, SuggestionsBuilder builder) {
 		Registry<Biome> biomeRegistry = command.getSource().getServer().registryAccess().registryOrThrow(Registries.BIOME);
-		List<String> enabledBiomes = getEnabledBiomes(biomeRegistry);
+		List<String> enabledBiomes = getEnabledSpawnBiomesForWorld(command);
 
 		List<ResourceLocation> biomesToEnable = new ArrayList<>();
 		for (ResourceLocation biomeIdentifier : biomeRegistry.keySet()) {
@@ -154,11 +134,9 @@ public class CommandBiomeSpawnPoint {
 	}
 
 	private static CompletableFuture<Suggestions> suggestEnabledBiomes(CommandContext<CommandSourceStack> command, SuggestionsBuilder builder) {
-		Registry<Biome> biomeRegistry = command.getSource().getServer().registryAccess().registryOrThrow(Registries.BIOME);
-
 		List<ResourceLocation> enabledBiomeIdentifiers = new ArrayList<>();
 		List<ResourceLocation> enabledTagIdentifiers = new ArrayList<>();
-		for (String enabledBiome : getEnabledBiomes(biomeRegistry)) {
+		for (String enabledBiome : getEnabledSpawnBiomesForWorld(command)) {
 			ResourceLocation identifier = ResourceLocation.tryParse(enabledBiome.replace("#", ""));
 			if (identifier == null) {
 				continue;
@@ -176,15 +154,6 @@ public class CommandBiomeSpawnPoint {
 		return SharedSuggestionProvider.suggestResource(enabledBiomeIdentifiers, builder);
 	}
 
-	private static List<String> getEnabledBiomes(Registry<Biome> biomeRegistry) {
-		try {
-			Util.loadSpawnBiomeConfig(biomeRegistry);
-		}
-		catch (Exception ignored) { }
-
-		return Util.getSpawnBiomes();
-	}
-
 	private static boolean existsInWorld(Registry<Biome> biomeRegistry, ResourceOrTagKeyArgument.Result<Biome> biome) {
 		Optional<ResourceKey<Biome>> optionalBiomeKey = biome.unwrap().left();
 		if (optionalBiomeKey.isPresent()) {
@@ -195,29 +164,30 @@ public class CommandBiomeSpawnPoint {
 		return optionalBiomeTag.isPresent() && biomeRegistry.getTag(optionalBiomeTag.get()).isPresent();
 	}
 
-	private static void showSpawnBiomes(CommandSourceStack source) {
-		List<String> spawnBiomes = Util.getSpawnBiomes();
-		if (spawnBiomes.isEmpty()) {
+	private static void showSpawnBiomes(CommandSourceStack source, String spawnBiomes) {
+		List<String> spawnBiomeEntries = Util.getSpawnBiomeEntries(spawnBiomes);
+		if (spawnBiomeEntries.isEmpty()) {
 			MessageFunctions.sendMessage(source, " N/A", ChatFormatting.RED);
-			MessageFunctions.sendTranslatableMessage(source, "collective.biomespawnpoint.message.enablebiomehint", ChatFormatting.GRAY);
 			return;
 		}
 
-		for (String spawnBiome : spawnBiomes) {
-			MessageFunctions.sendMessage(source, " " + spawnBiome, ChatFormatting.GRAY);
+		for (String spawnBiomeEntry : spawnBiomeEntries) {
+			MessageFunctions.sendMessage(source, " " + spawnBiomeEntry, ChatFormatting.GRAY);
 		}
 	}
 
 	private static int moveWorldSpawn(CommandSourceStack source, Random random, BlockPos searchCenter) {
-		ServerLevel serverLevel = source.getServer().overworld();
+		MinecraftServer server = source.getServer();
+		String spawnBiome = Util.pickSpawnBiome(server.registryAccess(), SpawnBiomeFiles.getSpawnBiomesForWorld(server), random);
+		ServerLevel serverLevel = Util.getSpawnLevel(server, spawnBiome);
 
-		BlockPos spawnPos = BiomeSpawnEvent.findSpawnPos(serverLevel, random, searchCenter);
+		BlockPos spawnPos = Util.findSpawnPos(serverLevel, spawnBiome, searchCenter);
 		if (spawnPos == null) {
 			MessageFunctions.sendTranslatableMessage(source, "collective.biomespawnpoint.message.nospawnfound", true, ChatFormatting.RED);
 			return 0;
 		}
 
-		BiomeSpawnEvent.setWorldSpawn(serverLevel, spawnPos);
+		Util.setWorldSpawn(serverLevel, spawnPos);
 
 		MessageFunctions.sendTranslatableMessage(source, "collective.biomespawnpoint.message.movedspawn", true, ChatFormatting.DARK_GREEN);
 		MessageFunctions.sendTranslatableMessage(source, " ", "collective.biomespawnpoint.message.spawnposition", ChatFormatting.GRAY, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
@@ -229,8 +199,6 @@ public class CommandBiomeSpawnPoint {
 		MessageFunctions.sendTranslatableMessage(source, "collective.shared.message.usage", true, ChatFormatting.DARK_GREEN, Reference.NAME);
 		MessageFunctions.sendMessage(source, " /" + commandName + " usage", ChatFormatting.DARK_GREEN);
 		MessageFunctions.sendTranslatableMessage(source, "  ", "collective.shared.message.showmessage", ChatFormatting.GRAY);
-		MessageFunctions.sendMessage(source, " /" + commandName + " reload", ChatFormatting.DARK_GREEN);
-		MessageFunctions.sendTranslatableMessage(source, "  ", "collective.biomespawnpoint.message.reloadsconfigfile", ChatFormatting.GRAY);
 		MessageFunctions.sendMessage(source, " /" + commandName + " enable <biome>", ChatFormatting.DARK_GREEN);
 		MessageFunctions.sendTranslatableMessage(source, "  ", "collective.biomespawnpoint.message.enablesbiome", ChatFormatting.GRAY);
 		MessageFunctions.sendMessage(source, " /" + commandName + " disable <biome>", ChatFormatting.DARK_GREEN);

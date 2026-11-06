@@ -4,7 +4,9 @@
   "package": "com.serilum.biomespawnpoint.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-
+    "MinecraftServerMixin",
+    "PlayerListMixin",
+    "ServerPlayerMixin"
   ],
   "client": [
   
