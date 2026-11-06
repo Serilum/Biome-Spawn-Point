@@ -9,6 +9,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ServerLevelData;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
+import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import org.slf4j.Logger;
 
@@ -30,5 +31,10 @@ public class NeoForgeBiomeSpawnEvent {
 		if (BiomeSpawnEvent.onWorldLoad((ServerLevel)level, (ServerLevelData)level.getLevelData())) {
 			e.setCanceled(true);
 		}
+	}
+
+	@SubscribeEvent
+	public static void onServerStarted(ServerStartedEvent e) {
+		BiomeSpawnEvent.onServerStarted(e.getServer());
 	}
 }

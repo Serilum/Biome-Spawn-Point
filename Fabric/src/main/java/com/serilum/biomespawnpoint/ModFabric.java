@@ -8,6 +8,8 @@ import com.natamus.collective.check.ShouldLoadCheck;
 import com.natamus.collective.fabric.callbacks.CollectiveMinecraftServerEvents;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.storage.ServerLevelData;
 
@@ -34,6 +36,10 @@ public class ModFabric implements ModInitializer {
 
 		CollectiveMinecraftServerEvents.WORLD_SET_SPAWN.register((ServerLevel serverLevel, ServerLevelData serverLevelData) -> {
 			BiomeSpawnEvent.onWorldLoad(serverLevel, serverLevelData);
+		});
+
+		ServerLifecycleEvents.SERVER_STARTED.register((MinecraftServer server) -> {
+			BiomeSpawnEvent.onServerStarted(server);
 		});
 	}
 

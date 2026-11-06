@@ -9,6 +9,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ServerLevelData;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.level.LevelEvent;
+import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.listener.SubscribeEvent;
 import org.slf4j.Logger;
 
@@ -18,6 +19,7 @@ public class ForgeBiomeSpawnEvent {
 
 		LevelEvent.CreateSpawnPosition.BUS.addListener(ForgeBiomeSpawnEvent::onWorldLoad);
 		RegisterCommandsEvent.BUS.addListener(ForgeBiomeSpawnEvent::registerCommands);
+		ServerStartedEvent.BUS.addListener(ForgeBiomeSpawnEvent::onServerStarted);
 	}
 
 	public static void registerCommands(RegisterCommandsEvent e) {
@@ -37,5 +39,9 @@ public class ForgeBiomeSpawnEvent {
 			return true;
 		}
 		return false;
+	}
+
+	public static void onServerStarted(ServerStartedEvent e) {
+		BiomeSpawnEvent.onServerStarted(e.getServer());
 	}
 }
