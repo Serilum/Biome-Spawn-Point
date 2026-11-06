@@ -5,10 +5,13 @@ import com.serilum.biomespawnpoint.cmds.CommandBiomeSpawnPoint;
 import com.serilum.biomespawnpoint.events.BiomeSpawnEvent;
 import com.natamus.collective.functions.WorldFunctions;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ServerLevelData;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
+import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import org.slf4j.Logger;
 
@@ -30,5 +33,16 @@ public class NeoForgeBiomeSpawnEvent {
 		if (BiomeSpawnEvent.onWorldLoad((ServerLevel)level, (ServerLevelData)level.getLevelData())) {
 			e.setCanceled(true);
 		}
+	}
+
+	@SubscribeEvent
+	public static void onServerStarted(ServerStartedEvent e) {
+		BiomeSpawnEvent.onServerStarted(e.getServer());
+	}
+
+	@SubscribeEvent
+	public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent e) {
+		Player player = e.getEntity();
+		BiomeSpawnEvent.onPlayerLoggedIn(player.level(), player);
 	}
 }

@@ -10,11 +10,15 @@ import java.util.List;
 public class ConfigHandler extends DuskConfig {
 	public static HashMap<String, List<String>> configMetaData = new HashMap<>();
 
+	@Entry(registry = "worldgen/biome", weights = true) public static String spawnBiomes = "";
 	@Entry(min = 256, max = 30000) public static int biomeSearchRadius = 6400;
 	@Entry(min = 0, max = 128) public static int minimumDistanceFromBiomeEdge = 16;
 	@Entry public static boolean preferSpawningOnLand = true;
 
 	public static void initConfig() {
+		configMetaData.put("spawnBiomes", Arrays.asList(
+			"The biomes new worlds spawn in, a higher weight is picked more often. A biome from another dimension, modded ones included, moves the spawn there."
+		));
 		configMetaData.put("biomeSearchRadius", Arrays.asList(
 			"How far from the center of the world (x=0, z=0), in blocks, the mod searches for one of the spawn biomes. A larger radius finds rarer biomes, but makes creating a new world take longer."
 		));
