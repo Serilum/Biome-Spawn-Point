@@ -14,7 +14,9 @@ import java.util.List;
 
 public class SpawnBiomesRow {
 	public static void register() {
-		WorldCreationRows.addButtonRow(WorldCreationTab.WORLD, Component.translatable("collective.biomespawnpoint.gui.spawnbiomes"), SpawnBiomesRow::getCountText, SpawnBiomesRow::getTooltip, SpawnBiomesRow::openPicker);
+		Component label = Component.translatable("collective.biomespawnpoint.gui.spawninbiomes");
+		Component description = Component.translatable("collective.biomespawnpoint.gui.spawninbiomesdescription");
+		WorldCreationRows.addButtonRow(WorldCreationTab.WORLD, label, description, SpawnBiomesRow::getCountText, SpawnBiomesRow::getTooltip, SpawnBiomesRow::openPicker);
 	}
 
 	private static String getShownSpawnBiomes() {
