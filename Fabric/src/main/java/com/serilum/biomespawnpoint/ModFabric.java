@@ -37,8 +37,8 @@ public class ModFabric implements ModInitializer {
 			CommandBiomeSpawnPoint.register(dispatcher);
 		});
 
-		CollectiveMinecraftServerEvents.WORLD_SET_SPAWN.register((ServerLevel serverLevel, ServerLevelData serverLevelData) -> {
-			BiomeSpawnEvent.onWorldLoad(serverLevel, serverLevelData);
+		CollectiveMinecraftServerEvents.WORLD_CREATE_SPAWN.register((ServerLevel serverLevel, ServerLevelData serverLevelData) -> {
+			return BiomeSpawnEvent.onWorldLoad(serverLevel, serverLevelData);
 		});
 
 		ServerLifecycleEvents.SERVER_STARTED.register((MinecraftServer server) -> {

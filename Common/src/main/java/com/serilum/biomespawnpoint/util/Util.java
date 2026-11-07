@@ -4,6 +4,7 @@ import com.natamus.collective.config.DuskConfigModToggles;
 import com.natamus.collective.functions.BlockPosFunctions;
 import com.natamus.collective.functions.ConfigFunctions;
 import com.natamus.collective.functions.FeatureFunctions;
+import com.natamus.collective.functions.VillageSpawnFunctions;
 import com.natamus.collective.functions.WorldFunctions;
 import com.natamus.collective.objects.IdAmount;
 import com.natamus.collective.services.Services;
@@ -191,24 +192,28 @@ public class Util {
 
 		WorldOptions worldOptions = serverLevel.getServer().getWorldData().worldGenOptions();
 
-		if (isVillageSpawnPointEnabled() && worldOptions.generateStructures() && serverLevel.dimension().equals(Level.OVERWORLD)) {
+		if (isVillageSpawnPointEnabled() && isSpawnInVillageEnabled(serverLevel.getServer()) && worldOptions.generateStructures() && serverLevel.dimension().equals(Level.OVERWORLD)) {
 			BlockPos villagePos;
 			if (spawnPos == null) {
 				Constants.logger.info("[Biome Spawn Point] Unable to find biome, but Village Spawn Point installed, finding village near x=" + searchCenter.getX() + ", z=" + searchCenter.getZ() + ".");
-				villagePos = BlockPosFunctions.getNearbyVillage(serverLevel, searchCenter);
+				villagePos = VillageSpawnFunctions.getVillageSpawnPos(serverLevel, searchCenter);
 			}
 			else {
 				Constants.logger.info("[Biome Spawn Point] Village Spawn Point installed, finding a village in the biome. This might take a few seconds.");
-				villagePos = BlockPosFunctions.getNearbyVillageInSameBiome(serverLevel, spawnPos);
+				villagePos = VillageSpawnFunctions.getVillageSpawnPosInSameBiome(serverLevel, spawnPos);
 			}
 
 			if (villagePos != null) {
 				Constants.logger.info("[Biome Spawn Point] Nearby village found.");
-				spawnPos = villagePos.immutable();
+				spawnPos = villagePos;
 			}
 		}
 
 		return spawnPos;
+	}
+
+	public static boolean isSpawnInVillageEnabled(MinecraftServer server) {
+		return ConfigFunctions.getConfigBoolean(server, "villagespawnpoint", "spawnInVillage", true);
 	}
 
 	public static void setWorldSpawn(ServerLevel serverLevel, BlockPos spawnPos) {
