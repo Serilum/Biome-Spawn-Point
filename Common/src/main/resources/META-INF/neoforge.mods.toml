@@ -6,7 +6,7 @@ iconFile="icon.png"
 
 [[mods]]
 modId="biomespawnpoint"
-version="4.0"
+version="4.1"
 displayName="Biome Spawn Point"
 displayURL="https://serilum.com/mod/biome-spawn-point"
 authors="Serilum"
@@ -22,7 +22,7 @@ If you would like to contribute too, check out https://serilum.com/donate Apprec
 [[dependencies.biomespawnpoint]]
     modId="collective"
     type="required"
-    versionRange="[8.82,)"
+    versionRange="[8.83,)"
     ordering="NONE"
     side="BOTH"
 
